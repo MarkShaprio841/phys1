@@ -6,9 +6,11 @@ def display_menu():
     print("  PHYSICS HELPER  ")
     print("--------------------")
     print("1. Equation Solvers")
-    print("2. Graphing Concepts")
-    print("3. Key Definitions")
-    print("4. Exit")
+    print("2. Multi-Step Motion")
+    print("3. V-T Graph Area Calc")
+    print("4. Graphing Concepts")
+    print("5. Key Definitions")
+    print("6. Exit")
     print("--------------------")
 
 def get_float_input(prompt):
@@ -101,45 +103,147 @@ def solvers_menu():
             print(f"\nAn error occurred: {e}. Please try again.\n")
 
 def display_graphing_concepts():
-    print("\n--- Position vs. Time Graphs ---")
-    print("* Slope = velocity (dx/dt)")
-    print("* Horizontal line = at rest")
-    print("* Steeper slope = faster motion")
-    print("* Positive slope = positive direction")
-    print("* Negative slope = negative direction")
-    print("\n--- Velocity vs. Time Graphs ---")
-    print("* Area under curve = displacement")
-    print("* Horizontal line = constant velocity")
-    print("* Above x-axis = positive velocity")
-    print("* Below x-axis = negative velocity")
-    input("\nPress Enter to return to the menu.")
+    print("\n--- Position vs. Time (x-t) Graphs ---")
+    print("The slope of the line is the velocity.")
+    print("  - Positive slope: moving in + direction.")
+    print("  - Negative slope: moving in - direction.")
+    print("  - Zero slope (horizontal line): at rest.")
+    print("  - Steeper slope: faster speed.")
+    print("  - Curved line: acceleration.")
+    print("  - Change in slope sign: change in direction.")
+    print("\n--- Velocity vs. Time (v-t) Graphs ---")
+    print("The area under the graph is displacement.")
+    print("  - Area above x-axis: positive displacement.")
+    print("  - Area below x-axis: negative displacement.")
+    print("The value of the line is the velocity.")
+    print("  - Line above x-axis: positive velocity.")
+    print("  - Line on x-axis: at rest.")
+    print("  - Line below x-axis: negative velocity.")
+    print("  - Crossing the x-axis: change in direction.")
+    input("\nPress Enter to return.")
 
 def display_definitions():
-    print("\n--- Key Definitions ---")
-    print("* Position (x): Location vs. reference point.")
-    print("* Displacement (dx): Change in position (x - x0).")
-    print("* Distance (d): Total path traveled (always +).")
-    print("* Velocity (v): Rate of change of position.")
-    print("* Avg. Velocity: Displacement / time.")
-    print("* Avg. Speed: Distance / time.")
-    input("\nPress Enter to return to the menu.")
+    print("\n--- Key Definitions (Expanded) ---")
+    print("Position (x): An object's location relative")
+    print("  to a reference point (origin).")
+    print("\nDisplacement (dx): The 'as the crow flies'")
+    print("  change in position. Formula: x_final - x_initial.")
+    print("  It is a vector, so it can be negative.")
+    print("\nDistance (d): The total path an object")
+    print("  travels. It is always positive.")
+    print("\n--- Key Distinction ---")
+    print("Avg. Velocity = Displacement / Time")
+    print("  (can be negative, depends on direction)")
+    print("\nAvg. Speed = Distance / Time")
+    print("  (always positive)")
+    print("\nExample: You run 2m East, then 1m West.")
+    print("  Distance = 2 + 1 = 3m")
+    print("  Displacement = 2 + (-1) = 1m East")
+    input("\nPress Enter to return.")
+
+def multi_step_motion_calculator():
+    print("\n--- Multi-Step Motion Calculator ---")
+    segments = []
+    while True:
+        print(f"\n--- Segment {len(segments) + 1} ---")
+        try:
+            v = get_float_input("Enter velocity (m/s): ")
+            t = get_float_input("Enter time (s): ")
+            if t < 0:
+                print("Time cannot be negative. Please try again.")
+                continue
+
+            segments.append({'v': v, 't': t})
+
+            another = input("Add another segment? (y/n): ").lower()
+            if another != 'y':
+                break
+        except Exception as e:
+            print(f"An error occurred: {e}. Please try again.")
+
+    if not segments:
+        print("\nNo segments entered.")
+        input("Press Enter to return.")
+        return
+
+    total_dist = 0
+    total_disp = 0
+    total_time = 0
+
+    for seg in segments:
+        disp = seg['v'] * seg['t']
+        total_disp += disp
+        total_dist += abs(disp)
+        total_time += seg['t']
+
+    print("\n--- Results ---")
+    print(f"Total Distance: {total_dist} m")
+    print(f"Final Displacement: {total_disp} m")
+    print(f"Total Time: {total_time} s")
+
+    if total_time > 0:
+        avg_speed = total_dist / total_time
+        avg_velo = total_disp / total_time
+        print(f"Average Speed: {avg_speed:.2f} m/s")
+        print(f"Average Velocity: {avg_velo:.2f} m/s")
+    else:
+        print("Cannot calculate averages with zero total time.")
+
+    input("\nPress Enter to return.")
+
+def vt_graph_area_calculator():
+    print("\n--- V-T Graph Area Calculator ---")
+    total_displacement = 0
+    while True:
+        print("\nCalculate area of which shape?")
+        print("1. Rectangle (constant velocity)")
+        print("2. Triangle (constant acceleration)")
+        print("3. Finish and get total displacement")
+
+        choice = input("Select an option (1-3): ")
+
+        if choice == '1':
+            print("\n-- Rectangle Area --")
+            v = get_float_input("Enter velocity (height): ")
+            t = get_float_input("Enter time (width): ")
+            area = v * t
+            print(f"Area (Displacement) = {area}")
+            total_displacement += area
+        elif choice == '2':
+            print("\n-- Triangle Area --")
+            v_change = get_float_input("Enter change in velocity (height): ")
+            t = get_float_input("Enter time (base): ")
+            area = 0.5 * v_change * t
+            print(f"Area (Displacement) = {area}")
+            total_displacement += area
+        elif choice == '3':
+            break
+        else:
+            print("\nInvalid selection.")
+
+    print(f"\n--- Total Displacement: {total_displacement} ---")
+    input("\nPress Enter to return.")
 
 def main():
     while True:
         display_menu()
         try:
-            choice = input("Select an option (1-4): ")
+            choice = input("Select an option (1-6): ")
             if choice == '1':
                 solvers_menu()
             elif choice == '2':
-                display_graphing_concepts()
+                multi_step_motion_calculator()
             elif choice == '3':
-                display_definitions()
+                vt_graph_area_calculator()
             elif choice == '4':
+                display_graphing_concepts()
+            elif choice == '5':
+                display_definitions()
+            elif choice == '6':
                 print("Exiting. Good luck on your test!")
                 break
             else:
-                print("\nInvalid choice. Please enter a number from 1 to 4.\n")
+                print("\nInvalid choice. Please enter a number from 1 to 6.\n")
         except (Exception) as e:
             print(f"\nAn error occurred: {e}. Please try again.\n")
 
