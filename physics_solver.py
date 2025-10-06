@@ -211,9 +211,9 @@ def vt_graph_area_calculator():
             total_displacement += area
         elif choice == '2':
             print("\n-- Triangle Area --")
-            v_change = get_float_input("Enter change in velocity (height): ")
-            t = get_float_input("Enter time (base): ")
-            area = 0.5 * v_change * t
+            height = get_float_input("Enter the velocity (triangle height): ")
+            base = get_float_input("Enter the time (triangle base): ")
+            area = 0.5 * height * base
             print(f"Area (Displacement) = {area}")
             total_displacement += area
         elif choice == '3':
